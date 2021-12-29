@@ -1,20 +1,49 @@
 package psk.Medicalprojects;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.InputMismatchException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.TreeSet;
+import java.util.Vector;
 public class pskaccess implements Runnable,pskactions
 {
-		  pskpharama[] pharama = new pskpharama[12];
-		  Scanner scan = new Scanner(System.in);
-		  public pskaccess() {
-			pharama[0] = new pskpharama("ketoflyshop", "psk", "karthika", "rajan", 60000);
-			pharama[1] = new pskpharama("paracemental", "friends", "rana", "vijay", 26000);
-			pharama[2] = new pskpharama("ommeecaps", "drughouse", "palani", "manoj", 16000);
-			pharama[3] = new pskpharama("benta-l", "prime", "sabrai", "murgan", 9000);
-			pharama[4] = new pskpharama("okacet", "anathsurgicals", "nagaraj", "sasikumar", 6000);
-			pharama[5] = new pskpharama("spanmonsal", "manipharema", "gokulraj", "raman", 8000);
-			pharama[6] = new pskpharama("dispoven", "sathyapharmacy", "ramkumar", "velsamy", 6000);
-			pharama[7] = new pskpharama("bd injection", "bawwapharmacy", "sathish", "kumar", 7000);
-			pharama[8] = new pskpharama("powergel", "psk", "palani", "vijay", 5000);
+	File file=new File("C:\\Users\\ELCOT\\Desktop\\vijay\\java\\consoleproject.doc");
+	FileOutputStream abc=null;ObjectOutputStream def=null;
+	FileInputStream gh=null;ObjectInputStream xyz=null;
+	ArrayList<pskpharama>pharam=null;
+	Scanner scan=new Scanner(System.in);
+	public void affect() throws IOException 
+	{
+		abc=new FileOutputStream(file);
+		def=new ObjectOutputStream(abc);
+		def.writeObject(pharam);
+		abc.close();
+		def.close();
+		
+	}
+	public void featch() throws IOException, ClassNotFoundException
+	{
+		gh=new FileInputStream(file);
+		xyz=new ObjectInputStream(gh);
+		pharam=(ArrayList<pskpharama>)xyz.readObject();
+		gh.close();
+		xyz.close();
+	}
+		
+		public  pskaccess()
+		{
+			
+			
 		}
 		  synchronized public void run() throws NullPointerException
 		  {
@@ -22,12 +51,12 @@ public class pskaccess implements Runnable,pskactions
 			 do
 			{
 				System.out.println("1.productname\n2.listall\n3.update\n4.delete\n5.sort\n6.search\n7.exit");
-				int menu = scan.nextInt();
+				int rasd = scan.nextInt();
 				String productname;
-				switch (menu) {
+				switch (rasd) {
 				case 1:
 					try {
-					System.out.println("create new pskpharama  with mandete details  productname,companyname,ownername,workername,salary");
+					System.out.println("CREATE NEW PSKPHARMA MADETATE DETAILS PRODUCTNAME, COMPANYNAME, OWNERNAME,REPERESENTATIVENAME,PRICE:");
 					pskpharama pskpharama = new pskpharama(scan.next(), scan.next(), scan.next(),
 							scan.next(), scan.nextInt());
 					System.out.println(addnewgroup(pskpharama));
@@ -45,20 +74,10 @@ public class pskaccess implements Runnable,pskactions
 					listallgroups();
 					break;
 				case 3:
-					try
-					{
 						System.out.println(" update by productname :");
 						String name = scan.next();
 						updategroup(name);
-					}
-					catch(NullPointerException bb)
-					{
-						System.out.println(bb+"\n invalid ente correctly");
-					System.out.println(" update by productname :");
-					String name = scan.next();
-					updategroup(name);
-					}
-					break;
+						break;
 				case 4:
 					try
 					{
@@ -72,11 +91,10 @@ public class pskaccess implements Runnable,pskactions
 					System.out.println("delete  by productname : ");
 					productname = scan.next();
 					deletegroup(productname);
-					break;
 				}
-									
+					break;		
 				case 5:
-					System.out.println("sort by productsname ,companyname,ownername,workername,salary:");
+					System.out.println("sort by PRODUCTNAME ,COMPANYNAME,OWNERNAME,REPEREENSATIVENAME,PRICE:");
 					sortgroup();
 					listallgroups();
 					break;
@@ -97,266 +115,185 @@ public class pskaccess implements Runnable,pskactions
 				}
 			} while (true);
 	}
-		public String addnewgroup(pskpharama pskpharama) {
+		  
+		public String addnewgroup(pskpharama pskpharama) 
+		{
 			try
 			{
-				for (int index = 0; index < pharama.length; index++) {
-					if (pharama[index] == null) {
-						pharama[index] = pskpharama;
-						return pskpharama.getProductname() + "has added";	
-					}
-				}
-				throw new pskpharemanotfoundException();
-		}
-			catch(pskpharemanotfoundException er)
-			{
-				System.out.println(er+"\ndelete something inorder to add:");
-				for(pskpharama f:pharama)
-				{
-					System.out.println(f.getProductname());
-				}
-				deletegroup(scan.next());
-				return addnewgroup(pskpharama);
+			featch();
+			pharam.add(pskpharama);
+			affect();
 			}
+			catch(IOException e) {}
+			catch(ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			return pskpharama.getProductname()+"has'added";
 		}
 
-		public void listallgroups() {
+		public void listallgroups() 
+		{
 			// TODO Auto-generated method stub
-			for (pskpharama k : pharama) {
-				try
-				{
-				System.out.println(k.toString());
-				}
-				catch(NullPointerException arr)
-				{
-					System.out.println(arr);
-					continue;
-				}
+			try
+			{
+			featch();
+			Iterator<pskpharama>user=pharam.iterator();
+			while(user.hasNext())
+			{
+				System.out.println(user.next());
 			}
-		}
+			}
+			catch(IOException | ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			}
+		
 		public void deletegroup(String productname)
 		{
 			try
 			{
-				for (int index = 0; index < pharama.length; index++)
+			featch();
+			List<pskpharama>tmp=new Vector<pskpharama>();
+			tmp.addAll(pharam);
+			try
+			{
+				for (int index=0;index<tmp.size();index++)
 				{
-					if (pharama[index].getProductname().equalsIgnoreCase(productname))
+					
+					if(tmp.get(index).getProductname().equalsIgnoreCase(productname))
 					{
-						 pharama[index] =null;
+						pharam.remove(tmp.get(index));
 						System.out.println(productname + "from has removed successfully:");
+						affect();
 						return;
-				}
+					}
 				}
 					throw new pskpharemanotfoundException();
 				}
+			
+		
 			catch(pskpharemanotfoundException pk)
 			{
 				System.out.println(pk+"\ninvalid pharama name except name to delete");
-				for(pskpharama h:pharama)
+				for(pskpharama h:pharam)
 				{
 					System.out.println(h.getProductname());	
 				}
 				deletegroup(scan.next());
 			}
 		}
-	
-		public void updategroup(String name) {
+			catch(IOException e) {}
+			catch(ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		public void updategroup(String name) 
+		{
 			try
 			{
-			for (int index = 0; index < pharama.length; index++) {
-				if (pharama[index] == null)
-					continue;
-				if (pharama[index].getProductname().equalsIgnoreCase(name)) {
-					System.out.print(pharama[index]);
-					try
-					{
-					System.out.println("tell abouy your ubdate");
-						String what = scan.next();
-				switch (what) {
-					case "productname":
-						System.out.println("tel about your product name");
-						String nm = scan.next();
-						pharama[index].setProductname(nm);
-						break;
-					case "companyname":
-						System.out.println("tell about your companyname");
-						String company = scan.next();
-						pharama[index].setCompanynmae(company);
-						break;
-					case "ownername":
-						System.out.println("tell about ownername name");
-						String owner = scan.next();
-						pharama[index].setOwnername(owner);
-						break;
-					case "workername":
-						System.out.println("tell about worker name");
-						String worker = scan.next();
-						pharama[index].setWorkername(worker);
-						break;
-					case "salary":
-						System.out.println("tell about worker salary");
-						int sal = scan.nextInt();
-						pharama[index].setSalary(sal);
-						break;
-						default:throw new pskpharemanotfoundException();
-					}
-					System.out.println(name + "has update" + name);
-					return;
-					}
-				catch(pskpharemanotfoundException|InputMismatchException ve)
-				{
-					Scanner scans=new Scanner(System.in);
-					System.out.println(ve+"nenter the except to update deatils:productname,companyname,workername,ownername,salary: ");
-					System.out.println("tell us what to update");
-					String what = scan.next();
-					switch (what) {
-						case "productname":
-							System.out.println("tel about your product name:");
-							String nm = scans.next();
-							pharama[index].setProductname(nm);
-							break;
-						case "companyname":
-							System.out.println("tell about your companyname:");
-							String company = scans.next();
-							pharama[index].setCompanynmae(company);
-							break;
-						case "ownername":
-							System.out.println("tell about owner name:");
-							String owner = scans.next();
-							pharama[index].setOwnername(owner);
-							break;
-						case "workername":
-							System.out.println("tell about worker name");
-							String worker = scans.next();
-							pharama[index].setWorkername(worker);
-							break;
-						case "salary":
-							System.out.println("tell about worker salary");
-							int sal = scans.nextInt();
-							pharama[index].setSalary(sal);
-							break;
-							default:System.out.println("maximum chance is over");
-					
-					}
-					System.out.println(what+ "has update" + name);
-					return;
-				}
-					
-				}
-			}
-			throw new pskpharemanotfoundException();
-			}
-			catch(pskpharemanotfoundException vr)
+				featch();
+			for(int index=0;index<pharam.size();index++)
 			{
-				System.out.println(vr+"\n enter the invaild pharamaname,enter correctly");
-				for(pskpharama h:pharama)
-				{
-					System.out.println(h.getProductname());
-				}
-					updategroup(scan.next());	
-				
-			}
 			
+				if(pharam.get(index).getProductname().equalsIgnoreCase(name))
+				{
+					System.out.println("tell us what to update:");
+					String what=scan.next();
+					switch (what)
+					{
+					case "productname":
+						System.out.println("tell us whats update name"+name);
+						pharam.get(index).setProductname(scan.next());
+						System.out.println(name+"productname has updated"+pharam.get(index).getProductname());
+						affect();
+						return;
+					case "companyname":
+						System.out.println("tell us update companyname"+name);
+						pharam.get(index).setCompanyname(scan.next());
+						System.out.println(name+"companyname has updated"+pharam.get(index).getCompanyname());
+						affect();
+						return;
+					case "ownername":
+						System.out.println("tell us update ownername"+name);
+						pharam.get(index).setOwnername(scan.next());
+						System.out.println(name+"ownername has updated"+pharam.get(index).getOwnername());
+						affect();
+						return;
+					case "representativename":
+						System.out.println("tell us update representativename"+name);
+						pharam.get(index).setrepresentativename(scan.next());
+						System.out.println(name+"representativename"+pharam.get(index).getrepresentativename());
+						affect();
+						return;
+					case "price":
+						System.out.println("tell us update price"+name);
+						pharam.get(index).setprice(scan.nextInt());;
+						System.out.println(name+"price"+pharam.get(index).getprice());
+						affect();
+						return;
+					default:throw new pskpharemanotfoundException();
+					}
+				}
+			}
+		
+			throw new pskpharemanotfoundException();
 		}
-		public void search(int salary) {
-			boolean match=false;
+			catch(pskpharemanotfoundException er)
+		{
+						System.out.println(er+"\n keyword update cannot matched");
+						System.out.println("reference should be productname,companyname,ownername,representativename,price:");
+						for(pskpharama f:pharam)
+						{
+							System.out.println(f.getProductname());
+						}
+						updategroup(scan.next());
+		}
+			catch(IOException | ClassNotFoundException er)
+			{
+				er.printStackTrace();
+			}
+		}
+		public void search(int price)
+		{			
+		try
+		{
+			boolean yet=false;
+			System.out.println("search based on salary:"+price);
+			featch();
+			for(pskpharama h:pharam)
+			{
+				if(h.getprice()==price)
+				{
+					yet=true;
+					System.out.println(h);
+				}
+			}
+			if(yet!=true)
+				throw new pskpharemanotfoundException();
+			}
+		catch(pskpharemanotfoundException |IOException |ClassNotFoundException er)
+		{
+			System.out.println(er+"\n enter the salary:");
+			search(scan.nextInt());
+		}
+		}
+		public void sortgroup()
+		{
 			try
 			{
-				System.out.println("Tring to Fetch salary"+salary);
-				for (int index = 0; index < pharama.length; index++) 
-				{
-					
-					if (pharama[index].getSalary()==salary)
-					{
-						System.out.println(pharama[index]);
-						// TODO Auto-generated method stub
-						//return;
-						match=true;
-					}
-					
-				}
-				
-				if(match!=true)
-					throw new pskpharemanotfoundException();
+			featch();
+			Collections.sort(pharam);
+			affect();
 			}
-					catch(pskpharemanotfoundException br)
-					{
-						System.out.println(br+"\n Tell us Correct Salary:");
-						for(pskpharama h:pharama)
-						{
-							System.out.println(h.getSalary());
-						}
-						
-						search(scan.nextInt());
-					}
-		}
-	
-		public void sortgroup() {
-			pskpharama pskpharama = null;
-			System.out.println("based on your sort");
-			String what = scan.next();
-			for (int hold = 0; hold < pharama.length; hold++) {
-				for (int com = hold + 1; com < pharama.length; com++) {
-					if (what.equalsIgnoreCase("productname")) 
-					{
-						if (pharama[com] == null || pharama[hold] == null)
-							continue;
-						if (pharama[hold].getProductname().compareTo(pharama[com].getProductname()) > 0) {
-							pskpharama = pharama[hold];
-							pharama[hold] = pharama[com];
-							pharama[com] = pskpharama;
-						}
-					}
-
-					else if (what.equalsIgnoreCase("companyname")) {
-						if (pharama[com] == null)
-							continue;
-						if (pharama[hold].getCompanynmae().compareTo(pharama[com].getCompanynmae()) > 0) {
-							pskpharama = pharama[hold];
-							pharama[hold] = pharama[com];
-							pharama[com] = pskpharama;
-
-						}
-					} 
-					else if (what.equalsIgnoreCase("ownername"))
-					{
-						if (pharama[com] == null)
-							continue;
-						if (pharama[hold].getOwnername().compareTo(pharama[com].getOwnername()) > 0) {
-							pskpharama = pharama[hold];
-							pharama[hold] = pharama[com];
-							pharama[com] = pskpharama;
-						}
-					} 
-					else if (what.equalsIgnoreCase("workername")) 
-					{
-						if (pharama[com] == null)
-							continue;
-						if (pharama[hold].getWorkername().compareTo(pharama[com].getWorkername()) > 0)
-						{
-							pskpharama = pharama[hold];
-							pharama[hold] = pharama[com];
-							pharama[com] = pskpharama;
-
-						}
-					}
-					else if(what.equalsIgnoreCase("salary"))
-					{
-						if (pharama[com] == null)
-							continue;
-						if(pharama[hold].getSalary()>=pharama[com].getSalary())
-						{
-							pskpharama=pharama[hold];
-							pharama[hold] = pharama[com];
-							pharama[com] = pskpharama;
-						}
-					}
-
-				}
-				// TODO Auto-generated method stub
-
+			catch(IOException | ClassNotFoundException e)
+			{
+			
 			}
 		}
-	}
+}
+
 
 

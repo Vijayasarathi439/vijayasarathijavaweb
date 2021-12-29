@@ -1,22 +1,26 @@
 package psk.Medicalprojects;
 
-public class pskpharama {
+import java.io.Serializable;
+
+public class pskpharama implements Comparable<pskpharama>,Serializable 
+{
 	private String productname;
-	private String companynmae;
+	private String companyname;
 	private String ownername;
-	private String workername;
-	private int salary;
+	private String representativename;
+	private int price;
+	
 	public String getProductname() {
 		return productname;
 	}
 	public void setProductname(String productname) {
 		this.productname = productname;
 	}
-	public String getCompanynmae() {
-		return companynmae;
+	public String getCompanyname() {
+		return companyname;
 	}
-	public void setCompanynmae(String companynmae) {
-		this.companynmae = companynmae;
+	public void setCompanyname(String companyname) {
+		this.companyname = companyname;
 	}
 	public String getOwnername() {
 		return ownername;
@@ -24,36 +28,39 @@ public class pskpharama {
 	public void setOwnername(String ownername) {
 		this.ownername = ownername;
 	}
-	public String getWorkername() {
-		return workername;
+	public String getrepresentativename() {
+		return representativename;
 	}
-	public void setWorkername(String workername) {
-		this.workername = workername;
+	public void setrepresentativename(String reprsentativename) {
+		this.representativename = reprsentativename;
 	}
-	public int getSalary() {
-		return salary;
+	public int getprice() {
+		return price;
 	}
-	public void setSalary(int salary) {
-		this.salary = salary;
+	public void setprice(int price) {
+		this.price = price;
 	}
 	@Override
 	public String toString() {
-		return "pskpharama [productname=" + productname + ", companynmae=" + companynmae + ", ownername=" + ownername
-				+ ", workername=" + workername + ", salary=" + salary + "]";
+		return "pskpharama [productname=" + productname + ", companyname=" + companyname + ", ownername=" + ownername
+				+ ", representativename=" + representativename + ", price=" + price + "]";
 	}
 	
-	public pskpharama(String productname, String companynmae, String ownername, String workername, int salary) {
+	public pskpharama(String productname, String companyname, String ownername, String representativename, int price) {
 		super();
 		this.productname = productname;
-		this.companynmae = companynmae;
+		this.companyname = companyname;
 		this.ownername = ownername;
-		this.workername = workername;
-		this.salary = salary;
+		this.representativename =representativename;
+		this.price=price;
 	}
 	public pskpharama() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-
+	@Override
+	public int compareTo(pskpharama o) {
+		// TODO Auto-generated method stub
+		return this.productname.compareTo(o.productname);
+	}
 }

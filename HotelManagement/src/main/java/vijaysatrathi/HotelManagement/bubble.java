@@ -9,7 +9,7 @@ public class bubble {
 		{
 			for(int j=0;j<yet.length;j++)
 			{
-				if(yet[i]>yet[j])
+				if(yet[i]<yet[j])
 			{
 				yet[i]^=yet[j];
 					yet[j]^=yet[i];

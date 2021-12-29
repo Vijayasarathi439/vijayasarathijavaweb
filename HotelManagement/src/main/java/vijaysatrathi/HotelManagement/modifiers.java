@@ -21,6 +21,11 @@ public class modifiers {
 		System.out.println(mytech.getBytes());
 		System.out.println(mytech.charAt(6));
 		System.out.println(mytech.substring(3, 9));
+		System.out.println(mytech.getBytes());
+		System.out.println(mytech.contains("athi"));
+		System.out.println(mytechie.contains("athi"));
+		System.out.println(mytech.charAt(4));
+		System.out.println(mytech.substring(3, 9));
 	}
 
 }

@@ -7,7 +7,8 @@ public class dowhileloop {
 		{
 			System.out.println(r);
 			r++;
-		}while(r<=10);
+		}
+		while(r<=10);
 	}
 }
 	
